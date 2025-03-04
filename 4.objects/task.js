@@ -1,9 +1,8 @@
 function Student(name, gender, age) {
-    let marks = [];
+    this.marks = [];
     this.name = name;
     this.gender = gender;
     this.age = age;
-    return {name, gender, age, marks};
 }
 let student1 = new Student("Tony", "male", 37);
 let student2 = new Student("Buzz", "female", 35);
@@ -13,7 +12,7 @@ Student.prototype.setSubject = function (subjectName) {
 }
 
 Student.prototype.addMarks = function (...marks) {
-    if (!this.marks) return;
+    if(this.excluded) return;
     this.marks.push(...marks);
 }
 
