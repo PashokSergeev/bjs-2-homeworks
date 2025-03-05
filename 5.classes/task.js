@@ -75,24 +75,68 @@ class Library {
         this.books = [];
     }
 
-    addBook(book){
-        if(book.state > 30){
+    addBook(book) {
+        if (book.state > 30) {
             this.books.push(book);
         }
     }
 
-    findBookBy(type, value){
+    findBookBy(type, value) {
         const foundBook = this.books.find(book => book[type] === value);
         return foundBook !== undefined ? foundBook : null;
     }
 
-    giveBookByName(bookName){
+    giveBookByName(bookName) {
         const foundBook = this.books.find(book => book.name === bookName);
-        if (foundBook){
+        if (foundBook) {
             this.books = this.books.filter(book => book.name !== bookName);
             return foundBook;
-        }else{
+        } else {
             return null;
         }
+    }
+}
+
+class Student {
+    constructor(name) {
+        this.name = name;
+        this.marks = {};
+    }
+
+    addMark(mark, subject) {
+        if (mark > 5 || mark < 2) {
+            return;
+        }
+        const foundSubject = this.marks[subject];
+        if (foundSubject) {
+            this.marks[subject].push(mark);
+        } else {
+            this.marks[subject] = [mark]
+        }
+    }
+
+    getAverageBySubject(subject) {
+        const foundSubject = this.marks[subject];
+        if (foundSubject) {
+            let sum = foundSubject.reduce((a, b) => a + b, 0);
+            return sum / foundSubject.length;
+        } else {
+            return 0;
+        }
+    }
+
+    getAverage() {
+        const keys = Object.keys(this.marks);
+        if (keys.length === 0) {
+            return 0;
+        }
+        let sum = 0;
+        let count = 0;
+        for (let key of keys) {
+            sum += this.marks[key].reduce((a, b) => a + b, 0) / this.marks[key].length;
+            console.log('sum: ' + sum)
+            count++;
+        }
+        return sum / count;
     }
 }
