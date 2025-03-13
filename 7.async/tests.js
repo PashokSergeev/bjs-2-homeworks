@@ -1,4 +1,4 @@
-describe('Домашнее задание к лекции 7 «Асинхронность»', () => {
+describe('0. Домашнее задание к лекции 7 «Асинхронность»', () => {
   let clock;
 
   beforeEach(function(){
@@ -6,11 +6,11 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
   })
 
-  it('необходимо создавать объект будильник', () => {
+  it('1. необходимо создавать объект будильник', () => {
     expect(clock).toBeTruthy();
   });
 
-  it('необходимо создавать добавлять звонок', () => {
+  it('2. необходимо создавать добавлять звонок', () => {
     const callback = f => f;
     clock.addClock("16:45", callback);
     expect(clock.alarmCollection.length).toEqual(1);
@@ -19,32 +19,32 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     expect(clock.alarmCollection[0].callback).toBe(callback);
   });
 
-  it('id интервала должно отсутствовать до запуска', () => {
+  it('3. id интервала должно отсутствовать до запуска', () => {
     expect(clock.intervalId).toBeNull();
   });
 
-  it('необходимо запускать и останавливать будильник', () => {
+  it('4. необходимо запускать и останавливать будильник', () => {
     clock.addClock("16:45", f => f);
     clock.start();
     expect(clock.intervalId).toBeDefined();
     clock.stop();
   });
 
-  it('будильник должен возвращать время в формате HH:MM', () => {
+  it('5. будильник должен возвращать время в формате HH:MM', () => {
     expect(clock.getCurrentFormattedTime()).toEqual(new Date().toLocaleTimeString("ru-Ru", {
       hour: "2-digit",
       minute: "2-digit",
     }));
   });
 
-  it('будильник должен создавать интервал, а затем его удалять', () => {
+  it('6. будильник должен создавать интервал, а затем его удалять', () => {
     clock.start();
     expect(clock.intervalId).toBeDefined();
     clock.stop();
     expect(clock.intervalId).toBeNull();
   });
 
-  it('будильник должен удалять звонки и интервал при очистке звонков', () => {
+  it('7. будильник должен удалять звонки и интервал при очистке звонков', () => {
     const callback = f => f;
     clock.addClock("16:45", callback);
     expect(clock.alarmCollection.length).toEqual(1);
@@ -55,14 +55,14 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     expect(clock.alarmCollection.length).toEqual(0);
   });
 
-  it('будильник не должен несколько интервалов', () => {
+  it('8. будильник не должен несколько интервалов', () => {
     clock.start();
     const intervalId = clock.intervalId;
     clock.start();
     expect(intervalId).toEqual(clock.intervalId);
   });
 
-  it('будильник должен удалять звонки по времени', () => {
+  it('9. будильник должен удалять звонки по времени', () => {
     const callback = f => f;
     clock.addClock("16:45", callback);
     clock.addClock("16:45", callback);
@@ -72,7 +72,7 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     expect(clock.alarmCollection).toEqual([{time: "16:46", callback, canCall: true}]);
   });
 
-  it('будильник не должен удалять звонки отсутствующему времени', () => {
+  it('10. будильник не должен удалять звонки отсутствующему времени', () => {
     const callback = f => f;
 
     clock.addClock("16:46", callback);
@@ -81,7 +81,7 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     expect(clock.alarmCollection).toEqual([{time: "16:46", callback, canCall: true}]);
   });
 
-  it('будильник должен затем очищать все звонки', () => {
+  it('11. будильник должен затем очищать все звонки', () => {
     clock.addClock("16:45", f => f);
     clock.addClock("16:45", f => f);
     clock.addClock("16:45", f => f);
@@ -91,15 +91,15 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     expect(clock.alarmCollection.length).toEqual(0);
   });
 
-  it('будильник должен выбрасывать объект ошибки, если время не было передано', () => {
+  it('12. будильник должен выбрасывать объект ошибки, если время не было передано', () => {
     expect(() => clock.addClock(null, f => f)).toThrow();
   });
 
-  it('будильник должен выбрасывать объект ошибки, если колбек не был передан', () => {
+  it('13. будильник должен выбрасывать объект ошибки, если колбек не был передан', () => {
     expect(() => clock.addClock("16:45")).toThrow();
   });
 
-  it('будильник должен восстанавливать возможность запуска звонков', () => {
+  it('14. будильник должен восстанавливать возможность запуска звонков', () => {
     clock.addClock("16:45", f => f);
     clock.addClock("16:45", f => f);
     clock.addClock("16:45", f => f);
@@ -111,7 +111,7 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     expect(clock.alarmCollection.every(alarm => alarm.canCall)).toBe(true);
   });
 
-  it('будильник должен запускать интервал, который не запустит колбек', (done) => {
+  it('15. будильник должен запускать интервал, который не запустит колбек', (done) => {
     clock.addClock("16:45", f => f);
     clock.getCurrentFormattedTime = () => "17:00";
     clock.start();
@@ -122,7 +122,7 @@ describe('Домашнее задание к лекции 7 «Асинхронн
     }, 1000);
   });
 
-  it('будильник должен запускать интервал, который запустит колбек', (done) => {
+  it('16. будильник должен запускать интервал, который запустит колбек', (done) => {
     let flagToCall = false;
     clock.addClock("16:45", () => flagToCall = true);
     clock.getCurrentFormattedTime = () => "16:45";
